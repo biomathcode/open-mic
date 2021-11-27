@@ -1,15 +1,16 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.scss';
+import 'semantic-ui-css/semantic.min.css'
 import App from './App';
-import { VoxeetSessionProvider } from './providers/VoxeetSessionProvider';
 import reportWebVitals from './reportWebVitals';
+import {AuthProvider} from './hooks/useAuth'
 
 ReactDOM.render(
   <React.StrictMode>
-    <VoxeetSessionProvider>
+    <AuthProvider>
       <App />
-    </VoxeetSessionProvider>
+    </AuthProvider>
   </React.StrictMode>,
   document.getElementById('root')
 );
