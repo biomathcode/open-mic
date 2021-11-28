@@ -1,3 +1,44 @@
+# Open Mic
+
+
+### Inspiration.
+
+
+After giving a first look at the dolby communication API. I really thought that It can be great for a niche target audience (podcasters, musicians, and stand up comics). That was the initial idea something private event for musicians, podcaster and stand up comics. 
+
+Then I thought it will be good if i add google authentication. So ended up adding firebase to the whole setup. 
+
+I templated the classroom template from GitHub of dolby GitHub repo. 
+
+The next idea was to have an email service built in the application so that user can create an invite list and send email to the respective people they wanna invite in an event. 
+
+# Start your Show on Open Mic.
+
+- Audio show - Podcast,
+- Video show - Music, Comedy,
+- Get High- Fidelity audio and video for all
+- Send invites to your close circle.
+
+Features
+
+- Login
+- Audio Conferrence
+- Video conferrence
+- Creating Event
+- Sending Email to multiple individuals.
+
+# You are Four Steps way from starting a Virtual Show.
+
+1. SignUp 
+2. Create an event
+3. Send and invite to your close friends.
+4. Start the show.
+
+
+
+
+
+
 
 # Dolby.io Classroom App
 
@@ -8,6 +49,9 @@ This application demonstrates an educational classroom application.
 - bootstrapped with Create React App
 
 You can learn more at https://docs.dolby.io/communications-apis/docs
+
+
+
 
 # Clone the Repository
 
