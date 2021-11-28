@@ -11,6 +11,7 @@ import {
   startAudio,
   stopAudio,
 } from '../../utils/voxeetUtils';
+
 import {
   subscribeToTeacherUpdates,
   subscribeToClassRoomUpdates,
@@ -20,6 +21,7 @@ import TeacherView from '../../views/TeacherView';
 import StudentView from '../../views/StudentView';
 import { useKillZombies } from '../../useKillZombies'
 import './Video.scss';
+import { useParams } from 'react-router';
 
 function Video() {
   const [cell, setCell] = useState(null);
@@ -29,6 +31,8 @@ function Video() {
   const [classRoom, setClassRoom] = useState(null);
   const [isUserVideoActive, setIsUserVideoActive] = useState(true);
   const [isUserAudioActive, setIsUserAudioActive] = useState(false);
+
+  const {id} = useParams();
 
   // event handlers
   const handleTeacherChange = useCallback(
@@ -212,8 +216,9 @@ function Video() {
 
   // load actions
   useEffect(() => {
-    const params = new URLSearchParams(window.location.search);
-    const cell = params.get('cell');
+    // const params = new URLSearchParams(window.location.search);
+    // const cell = params.get('cell');
+    const cell = id
     setCell(cell || 'test1234');
 
     window.addEventListener('exit', handleExitMessageRecieved);
@@ -303,6 +308,7 @@ function Video() {
     isTeacherView = true;
   }
 
+
   const view = isTeacherView ? (
     <TeacherView
       cell={cell}
@@ -329,7 +335,11 @@ function Video() {
     />
   );
 
-  return <div className="app">{view}</div>;
+  return <div className="app">
+    
+    {view}
+    
+  </div>;
 }
 
 export default Video;

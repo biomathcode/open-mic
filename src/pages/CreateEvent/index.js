@@ -40,14 +40,14 @@ const CreateEvent = () => {
 
     const url = document.location.origin
 
-    const event_url = `${url}/video/${id}`
+    const event_url = `${url}/${type}/${id}`
     if(user.uid && name && type && description && startDate){
       const newData = {
         event_name: name, 
         event_type: type, 
         event_description: description,
         event_date : String(startDate),
-        event_url,
+        event_url: event_url,
         invite_list : [],
         invite_send : false,
         invite_subject : "",

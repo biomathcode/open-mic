@@ -31,7 +31,6 @@ function AuthRoute({children}){
 function App() {
   return (
     <div >
-              <VoxeetSessionProvider>
 
       <Router>
         <Routes>
@@ -45,10 +44,15 @@ function App() {
             } />
             
             <Route exact path="/video/:id" element={
+              <VoxeetSessionProvider>
             <Video/>
+
+      </VoxeetSessionProvider>
+
+
            
             } />
-            <Route exact path="/audio" element={
+            <Route exact path="/audio/:id" element={
               <AudioCall/>
             }
             />
@@ -73,7 +77,6 @@ function App() {
         </Routes>
       </Router>
 
-      </VoxeetSessionProvider>
 
 
     </div>

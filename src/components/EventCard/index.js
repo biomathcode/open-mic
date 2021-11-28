@@ -81,6 +81,10 @@ function EventItem() {
                                         </Item.Header>
                                         <Item.Meta>{event?.event_date}</Item.Meta>
                                         <Item.Description>{event?.event_description}</Item.Description>
+                                       
+                                        <Button as="a" onClick={() => window.open(event.event_url)}>
+                                            Go to Event
+                                        </Button>
                                         <h3>Invite list </h3>
                                         <ul>
                                             {event.invite_list && event.invite_list?.map((email) => {

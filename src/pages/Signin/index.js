@@ -7,7 +7,7 @@ import { Link, Navigate} from 'react-router-dom';
 
 
 function Signin() {
-  const { signInWithGoogle,  isAuthenticating  } = useAuth();
+  const { signInWithGoogle,  isAuthenticating } = useAuth();
 
   return (
     !isAuthenticating ?
