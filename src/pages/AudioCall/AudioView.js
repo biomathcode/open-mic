@@ -1,19 +1,19 @@
 import React, {useState, useEffect} from 'react';
-import { Container, Header, Image, Button, Progress, Feed } from 'semantic-ui-react';
+import { Container, Header, Image, Button, Progress, Feed, Card, GridRow, Grid } from 'semantic-ui-react';
 import {getParticipantAudioLevel} from '../../utils/voxeetUtils'
 
 
-function ProfileView() {
-
-    const user = {
-        display_image: 'https://lh3.googleusercontent.com/a-/AOh14Gjnf7yh9y4idBUH3Wj9ID_yJG0yHaepal1ARLjfhA=s96-c',
-        displayName: 'Pratik Sharma'
-    }
-
+function ProfileView({user,audioLevel, joined}) {
     return(
         <Container>
-            <Image src={user.display_image} />
+            <Grid padded>
+            <Grid.Row >
+            <Image circular src={user.photoURL} />
             <Header>{user.displayName}</Header>
+            </Grid.Row>
+            </Grid>
+            
+         <AudioBar audiolevel={audioLevel} />
         </Container>
     )
 }
@@ -28,41 +28,24 @@ function AudioBar({audiolevel}) {
 
 function ParticipantListView({participantList}) {
 
-    const userList = [
-        {
-            display_image: 'https://lh3.googleusercontent.com/a-/AOh14Gjnf7yh9y4idBUH3Wj9ID_yJG0yHaepal1ARLjfhA=s96-c',
-            displayName: 'Pratik Sharma',
-            audioLevel: '0.2'
-        },
-        {
-            display_image: 'https://lh3.googleusercontent.com/a-/AOh14Gjnf7yh9y4idBUH3Wj9ID_yJG0yHaepal1ARLjfhA=s96-c',
-            displayName: 'chetan Sharma',
-            audioLevel: '0.4'
-        },
-        {
-            display_image: 'https://lh3.googleusercontent.com/a-/AOh14Gjnf7yh9y4idBUH3Wj9ID_yJG0yHaepal1ARLjfhA=s96-c',
-            displayName: 'sunita Sharma',
-            audioLevel: '0.67'
-        }
-            
-
-    ]
+    console.log(participantList)
 
 
     return(
         <Feed>
+            <h1> ParticipantList </h1>
             {
-                userList.map((user) => {
+                participantList.map((user) => {
                     return (
-                        <Feed.Event key={user.displayName}>
+                        <Feed.Event key={user.externalId}>
                             <Feed.Label>
-                                <Image src={user.display_image} />
+                                <Image src={user.avatarUrl} />
                             </Feed.Label>
                             <Feed.Content>
                                 <Feed.Summary>
-                                    <Feed.User>{user.displayName}</Feed.User>
+                                    <Feed.User>{user.name}</Feed.User>
                                 </Feed.Summary>
-                                <AudioBar audiolevel={user.audioLevel} />
+                               
                             </Feed.Content>
                         </Feed.Event>
                         
@@ -76,33 +59,30 @@ function ParticipantListView({participantList}) {
 }
 
 
-function AudioView({join,audioLevel,participantList,selfParticipant,handleAudioLevel, joined, leave}) {
+function AudioView({join,audioLevel,participantList,selfParticipant,handleAudioLevel, joined, leave, user}) {
     const AUDIO_CHECK_INTERVAL = 100
     useEffect(() => {
         if (joined) {
-         const interval = setInterval(() => {
-             getParticipantAudioLevel(selfParticipant,handleAudioLevel)
-         }, AUDIO_CHECK_INTERVAL) 
-  
-         return () => {
-             clearInterval(interval);
-         }
+            const interval = setInterval(() => {
+                getParticipantAudioLevel(selfParticipant,handleAudioLevel)
+            }, AUDIO_CHECK_INTERVAL) 
+     
+            return () => {
+                clearInterval(interval);
+            }
+
         }
      }, [selfParticipant, handleAudioLevel, joined]);
-
-    const [startView, setStartView] = useState(joined)
-    
     return ( 
         <Container >
             {!joined && <Button onClick={join}>Join</Button> }
-            <ProfileView/>
-        <ParticipantListView participantList={participantList} />
+            <ProfileView user={user} audioLevel={audioLevel} selfParticipant={selfParticipant} handleAudioLevel={handleAudioLevel}/>
         {joined &&
         <Container>
-            <AudioBar audiolevel={audioLevel}/>
             <Button onClick={leave}>Leave</Button>   
         </Container>
 }
+        <ParticipantListView participantList={participantList} />
         </Container>
      );
 }

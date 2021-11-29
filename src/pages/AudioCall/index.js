@@ -36,15 +36,6 @@ function AudioCall() {
 
     const navigate = useNavigate()
 
-    // let user ={
-    //     displayName: 'Pratik sharma',
-    //     id: '123', 
-    //     is_joined: false,
-    //     is_host: true,
-    //     display_url: 'href'
-    // }
-    //printaudiolevel
-
     const handleAudioLevel = useCallback((audio) => {
         setAudioLevel(audio);
     }, [audioLevel])
@@ -68,27 +59,26 @@ function AudioCall() {
                 return el.id === participant.id;
             })
 
+            console.log(participant.info)
+
             //if not in the list, add
             if (thisParticipentIndex === -1) {
-                let nameToAdd, isYou;
-
+                let isYou;
                 if(session.participant.id === participant.id) {
                     isYou = true;
-                    nameToAdd = `${participant.info.name} (you)`;
                 } else {
                     isYou = false;
-                    nameToAdd = participant.info.name;
                 }
-
                 //create object with name and ID
-            const newDetails = {
-                name: nameToAdd,
-                id: participant.id,
-                participant: participant.streams,
-                isAudio: true,
-                isYou: isYou,
-                isInactive: false,
-            };
+                const newDetails = {
+                    name: participant.info.name,
+                    avatarUrl: participant.info.avatarUrl,
+                    id: participant.id,
+                    participant: participant.streams,
+                    isAudio: true,
+                    isYou: isYou,
+                    isInactive: false,
+                };
 
             const newParticipantList = [...participantList,newDetails];
             setParticipantList(newParticipantList);
@@ -98,10 +88,18 @@ function AudioCall() {
 
     useEffect(() => {
       // how can I tell if a session is opened?
-      session.open({ name: user?.displayName }).then(() => {
-        setIsSessionLoaded(true);
-      });
-    }, [id]);
+      if(user) {
+        session.open(  {
+            externalId: user.uid,
+            name: user.displayName,
+            avatarUrl: user.photoURL,
+        }).then(() => {
+          setIsSessionLoaded(true);
+        });
+
+      }
+      
+    }, [id,user]);
 
     useEffect(() => {
         if (isUserAudioActive) {
@@ -117,8 +115,6 @@ function AudioCall() {
 
 
 
-    const userWhoCreatedEventId = '123'
-
     const join = ()=> {
         createConference(id)
             .then((conf) => {
@@ -127,10 +123,7 @@ function AudioCall() {
             .then((newAudioRoom) => {
                 const newUserId = session.participant.id;
                 console.log(newUserId)
-                if (userWhoCreatedEventId === user.id) {
-                    setHostId(newUserId);
-                    user.is_joined = true
-                }
+                
                 setUserId(newUserId);
                 setAudioRoom(newAudioRoom);
                 setJoined(true)
@@ -184,6 +177,7 @@ function AudioCall() {
             audioRoom={audioRoom}
             isUserAudioActive={isUserAudioActive}
             handleAudioActiveUpdate={handleAudioActiveUpdate}
+            user={user}
             />
 
         </div>
