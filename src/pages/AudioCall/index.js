@@ -11,6 +11,8 @@ import {
 import {  useNavigate, useParams } from 'react-router';
 import AudioView from './AudioView';
 import { useAuth } from '../../hooks/useAuth';
+import { Container } from 'semantic-ui-react';
+import SignInModel from './SignInModel';
 
 
 
@@ -19,7 +21,6 @@ import { useAuth } from '../../hooks/useAuth';
 function AudioCall() {
     const {id} = useParams()
 
-    const {user} = useAuth();
     const [isSessionLoaded, setIsSessionLoaded] = useState(false);
     // const [cell, setCell] = useState(null) //cell is id 
     const [userId, setUserId] = useState(null)
@@ -158,6 +159,14 @@ function AudioCall() {
         participantList,
         streamUpdatedCallback
     ])
+
+    if(!user) {
+        return (
+            <Container>
+                <SignInModel/>
+            </Container>
+        )
+    }
 
   
     return isSessionLoaded ? 
