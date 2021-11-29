@@ -15,7 +15,6 @@ const Dashboard =() => {
             <ToastContainer/>
             <Button onClick={logout}>Signout</Button>
             <h3>Welcome, {user && user.displayName} </h3>
-
             <Profile/>
             <Button floated='right' to="/createEvent" as={Link}>Create Event</Button>
             <EventCard/>

@@ -8,7 +8,7 @@ import { useAuth } from '../../hooks/useAuth';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 
-function SendEmail({id,date, event_name,  }) {
+function SendEmail({id,date, event_name,event_url, event_date }) {
     const {user} = useAuth();
     const [emails, setEmails] = useState(['pratik@coolhead.in']);
     const [message, setMessage] = useState('');
@@ -19,10 +19,13 @@ function SendEmail({id,date, event_name,  }) {
 
     const sendInvite = async() => {
         if (message && subject && emails) {
-            const response = await axios.post('/.netlify/functions/sendEmail', {
+            const response = await axios.post('/.netlify/functions/sendemail', {
                 "inviteList": emails, 
                 message, 
-                subject
+                subject,
+                event_name,
+                event_url,
+                event_date
             })
             if(response.status === 200) {
                 setNotify('your invite is successfully send to the invite list emails ')
@@ -35,15 +38,15 @@ function SendEmail({id,date, event_name,  }) {
         }
         navigate('/dashboard')
     }
+   
+
 
     return ( 
         <Container>
             <Header  as="h2" textAlign="center">
-                Invite list
+                Invite list for {event_name}
             </Header>
-            <Button onClick={() => navigate('/dashboard')}>
-                <Icon name="backward" />back 
-            </Button>
+            
             <Divider/>
             <Header as="h3" textAlign="left">
                 From {user.displayName}
@@ -88,6 +91,7 @@ function SendEmail({id,date, event_name,  }) {
                 notify &&
                 <Message>{notify}</Message>
             }
+           
 
         </Container>
      );

@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom';
-import { Button, Item, Container, Label, Message, Header, Icon } from 'semantic-ui-react'
+import { Button, Item, Container, Label, Message, Header, Icon, Modal } from 'semantic-ui-react'
 import { useAuth } from '../../hooks/useAuth';
 import { db } from '../../hooks/useAuth';
 
 import { deleteEvent } from '../../hooks/firestoreutils'
+import SendEmail from '../SendEmail';
 
 
 const copyToClipboard = (msg) => {
@@ -15,14 +16,14 @@ function EventItem() {
     const { user } =  useAuth();
 
     const [data, setData] = useState([]);
+
+    const [openSend, setOpenSend] = useState(false);
     
     const deletingEvent = (id) => {
         deleteEvent(id)
         setData(data => data.filter(event => event.id !== id));
         console.log('deleted event with id', id);
-    }
-
-    
+    }    
 
     useEffect(() => {
         async function query() {
@@ -97,12 +98,25 @@ function EventItem() {
                                                 <Message>you have already send an invite</Message>
                                                 :
                                                 (
-                                                    <Link to="/sendInvite">
-                                                        <Button>
-                                                            Send invite
-                                                        </Button>
-                                                    </Link>
+                                                    // <Link to="/sendInvite">
+                                                    //     <Button>
+                                                    //         Send invite
+                                                    //     </Button>
+                                                    // </Link>
+                                                    <Modal
+                                                    onClose={() => setOpenSend(false)}
+                                                    onOpen={() => setOpenSend(true)}
+                                                    open={openSend}
+                                                    trigger={<Button>Send Invite</Button>}
+                                                    >   
+                                                    <SendEmail
+                                                    event_name={event.event_name}
+                                                    event_date={event.event_date}
+                                                    event_url={event.event_url}
+                                                    />
+                                                    </Modal>
                                                 )
+
                                         }
                                         {event.event_url && 
                                         <Item.Extra>
