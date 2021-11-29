@@ -18,6 +18,8 @@ import { useAuth } from '../../hooks/useAuth';
 
 function AudioCall() {
     const {id} = useParams()
+
+    const {user} = useAuth();
     const [isSessionLoaded, setIsSessionLoaded] = useState(false);
     // const [cell, setCell] = useState(null) //cell is id 
     const [userId, setUserId] = useState(null)
@@ -170,7 +172,6 @@ function AudioCall() {
             handleAudioLevel={handleAudioLevel}
             selfParticipant={selfParticipant}
             participantList={participantList}
-
             audioRoom={audioRoom}
             isUserAudioActive={isUserAudioActive}
             handleAudioActiveUpdate={handleAudioActiveUpdate}
